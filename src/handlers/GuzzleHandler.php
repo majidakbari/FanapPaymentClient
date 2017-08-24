@@ -60,6 +60,9 @@ class GuzzleHandler implements iHandler
             case 'getBusinessId':
                 return $this->serverUrl . ':8081/nzh/biz/getBusiness';
                 break;
+            case 'followDigipeyk':
+                return $this->serverUrl . ':8081/nzh/follow/';
+                break;
         }
     }
 
@@ -76,6 +79,31 @@ class GuzzleHandler implements iHandler
                 'query' => [
                     '_token_' => $apiToken,
                     '_token_issuer_' => 1
+                ]
+            ]);
+        } catch (ConnectException $e) {
+            throw new CanNotConnectToServerException();
+        }
+
+        return $this->getResult($response);
+    }
+
+    /**
+     * @param string $token
+     * @param bool $follow
+     * @param $businessId
+     * @return array
+     * @throws CanNotConnectToServerException
+     */
+    function followDigipeyk(string $token, int $businessId, bool $follow = true): array
+    {
+        try {
+            $response = $this->httpClient->get($this->endpoint(__FUNCTION__), [
+                'query' => [
+                    '_token_'        => $token,
+                    '_token_issuer_' => 1,
+                    'follow'         => $follow,
+                    'businessId'     => $businessId
                 ]
             ]);
         } catch (ConnectException $e) {

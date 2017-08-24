@@ -1,5 +1,5 @@
 <?php
-namespace makbari\fanapOauthClient;
+namespace makbari\fanapPaymentClient\clients;
 
 use makbari\fanapPaymentClient\exceptions\UnAuthorizedException;
 use makbari\fanapPaymentClient\interfaces\iClient;
@@ -39,5 +39,23 @@ class Client implements iClient
         }
 
         return (int) $result['result']['id'];
+    }
+
+
+    /**
+     * @param string $token
+     * @param int $businessId
+     * @param bool $follow
+     * @return bool
+     * @throws UnAuthorizedException
+     */
+    function followDigipeyk(string $token, int $businessId, bool $follow = true): bool
+    {
+        $result = $this->handler->followDigipeyk($token, $businessId, $follow);
+        if ($result['hasError']){
+            throw new UnAuthorizedException();
+        }
+
+        return $result['result'];
     }
 }
