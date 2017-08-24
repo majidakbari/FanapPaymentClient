@@ -66,6 +66,8 @@ class GuzzleHandler implements iHandler
             case 'getOneTimeToken':
                 return $this->serverUrl . ':8081/nzh/ott/';
                 break;
+            case 'createInvoice':
+                return $this->serverUrl . ':8081/nzh/biz/issueInvoice/';
         }
     }
 
@@ -128,6 +130,46 @@ class GuzzleHandler implements iHandler
                 'query' => [
                     '_token_'        => $apiToken,
                     '_token_issuer_' => 1
+                ]
+            ]);
+        } catch (ConnectException $e) {
+            throw new CanNotConnectToServerException();
+        }
+
+        return $this->getResult($response);
+    }
+
+    function createInvoice(
+        string $apiToken,
+        string $ott,
+        string $redirectUrl,
+        int $userId,
+        string $productId,
+        int $price,
+        string $productDescription,
+        int $quantity,
+        string $guildCode,
+        int $addressId,
+        int $preferredTaxRate
+    ): array
+    {
+        try {
+            $response = $this->httpClient->get($this->endpoint(__FUNCTION__), [
+                'query' => [
+                    'redirectURL'       => $redirectUrl,
+                    'userId'            => $userId,
+                    'productId'         => [$productId],
+                    'price'             => [$price],
+                    'productDescription'=> [$productDescription],
+                    'quantity'          => [$quantity],
+                    'guildCode'         => $guildCode,
+                    'addressId'         => $addressId,
+                    'preferredTaxRate'  => $preferredTaxRate
+                ],
+                'headers' => [
+                    '_token_'           => $apiToken,
+                    '_token_issuer_'    => 1,
+                    '_ott_'             => $ott
                 ]
             ]);
         } catch (ConnectException $e) {

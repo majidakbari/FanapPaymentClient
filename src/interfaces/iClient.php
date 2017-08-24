@@ -28,4 +28,33 @@ interface iClient
      */
     function getOneTimeToken(string $apiToken) :string;
 
+
+    /**
+     * @param string $apiToken
+     * @param string $ott
+     * @param string $redirectUrl
+     * @param int $userId
+     * @param string $productId
+     * @param int $price
+     * @param string $productDescription
+     * @param int $quantity
+     * @param string $guildCode
+     * @param int $addressId
+     * @param int $preferredTaxRate
+     * @return array
+     */
+    function createInvoice(
+        string $apiToken,
+        string $ott,
+        string $redirectUrl,
+        int    $userId,
+        string $productId,
+        int    $price,
+        string $productDescription,
+        int    $quantity,
+        string $guildCode,
+        int    $addressId,
+        int    $preferredTaxRate
+    ) :array ;
+
 }

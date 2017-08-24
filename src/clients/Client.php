@@ -1,6 +1,7 @@
 <?php
 namespace makbari\fanapPaymentClient\clients;
 
+use makbari\fanapPaymentClient\exceptions\PaymentException;
 use makbari\fanapPaymentClient\exceptions\UnAuthorizedException;
 use makbari\fanapPaymentClient\interfaces\iClient;
 use makbari\fanapPaymentClient\interfaces\iHandler;
@@ -72,5 +73,54 @@ class Client implements iClient
         }
 
         return $result['ott'];
+    }
+
+    /**
+     * @param string $apiToken
+     * @param string $ott
+     * @param string $redirectUrl
+     * @param int $userId
+     * @param string $productId
+     * @param int $price
+     * @param string $productDescription
+     * @param int $quantity
+     * @param string $guildCode
+     * @param int $addressId
+     * @param int $preferredTaxRate
+     * @return array
+     * @throws PaymentException
+     */
+    function createInvoice(
+        string $apiToken,
+        string $ott,
+        string $redirectUrl,
+        int $userId,
+        string $productId,
+        int $price,
+        string $productDescription,
+        int $quantity,
+        string $guildCode,
+        int $addressId,
+        int $preferredTaxRate
+    ): array
+    {
+        $result = $this->handler->createInvoice(
+             $apiToken,
+             $ott,
+             $redirectUrl,
+             $userId,
+             $productId,
+             $price,
+             $productDescription,
+             $quantity,
+             $guildCode,
+             $addressId,
+             $preferredTaxRate
+        );
+
+        if ($result['hasError']){
+            throw new PaymentException();
+        }
+        return $result;
     }
 }
