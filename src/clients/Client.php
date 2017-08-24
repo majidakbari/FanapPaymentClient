@@ -28,17 +28,17 @@ class Client implements iClient
 
     /**
      * @param string $apiToken
-     * @return int
+     * @return array
      * @throws UnAuthorizedException
      */
-    function getBusinessId(string $apiToken): int
+    function getBusinessId(string $apiToken): array
     {
         $result = $this->handler->getBusinessId($apiToken);
         if ($result['hasError']){
             throw new UnAuthorizedException();
         }
 
-        return (int) $result['result']['id'];
+        return  $result;
     }
 
 
@@ -57,5 +57,20 @@ class Client implements iClient
         }
 
         return $result['result'];
+    }
+
+    /**
+     * @param string $apiToken
+     * @return string
+     * @throws UnAuthorizedException
+     */
+    function getOneTimeToken(string $apiToken): string
+    {
+        $result = $this->handler->getOneTimeToken($apiToken);
+        if ($result['hasError']){
+            throw new UnAuthorizedException();
+        }
+
+        return $result['ott'];
     }
 }

@@ -22,4 +22,11 @@ interface iHandler
      * @return array
      */
     function followDigipeyk(string $token, int $businessId, bool $follow = true) :array;
+
+
+    /**
+     * @param string $apiToken
+     * @return array
+     */
+    function getOneTimeToken(string $apiToken) :array ;
 }

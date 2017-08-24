@@ -63,6 +63,9 @@ class GuzzleHandler implements iHandler
             case 'followDigipeyk':
                 return $this->serverUrl . ':8081/nzh/follow/';
                 break;
+            case 'getOneTimeToken':
+                return $this->serverUrl . ':8081/nzh/ott/';
+                break;
         }
     }
 
@@ -104,6 +107,27 @@ class GuzzleHandler implements iHandler
                     '_token_issuer_' => 1,
                     'follow'         => $follow,
                     'businessId'     => $businessId
+                ]
+            ]);
+        } catch (ConnectException $e) {
+            throw new CanNotConnectToServerException();
+        }
+
+        return $this->getResult($response);
+    }
+
+    /**
+     * @param string $apiToken
+     * @return array
+     * @throws CanNotConnectToServerException
+     */
+    function getOneTimeToken(string $apiToken): array
+    {
+        try {
+            $response = $this->httpClient->get($this->endpoint(__FUNCTION__), [
+                'query' => [
+                    '_token_'        => $apiToken,
+                    '_token_issuer_' => 1
                 ]
             ]);
         } catch (ConnectException $e) {
