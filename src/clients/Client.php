@@ -123,4 +123,20 @@ class Client implements iClient
         }
         return $result;
     }
+
+    /**
+     * @param int $invoiceId
+     * @param string $apiToken
+     * @return array
+     * @throws PaymentException
+     */
+    function closeInvoice(int $invoiceId, string $apiToken): array
+    {
+        $result = $this->handler->closeInvoice($invoiceId,$apiToken);
+
+        if ($result['hasError']){
+            throw new PaymentException();
+        }
+        return $result;
+    }
 }

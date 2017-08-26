@@ -68,6 +68,9 @@ class GuzzleHandler implements iHandler
                 break;
             case 'createInvoice':
                 return $this->serverUrl . ':8081/nzh/biz/issueInvoice/';
+            case 'closeInvoice' :
+                return $this->serverUrl . ':8081/nzh/biz/closeInvoice/';
+                break;
         }
     }
 
@@ -139,6 +142,21 @@ class GuzzleHandler implements iHandler
         return $this->getResult($response);
     }
 
+    /**
+     * @param string $apiToken
+     * @param string $ott
+     * @param string $redirectUrl
+     * @param int $userId
+     * @param string $productId
+     * @param int $price
+     * @param string $productDescription
+     * @param int $quantity
+     * @param string $guildCode
+     * @param int $addressId
+     * @param int $preferredTaxRate
+     * @return array
+     * @throws CanNotConnectToServerException
+     */
     function createInvoice(
         string $apiToken,
         string $ott,
@@ -170,6 +188,31 @@ class GuzzleHandler implements iHandler
                     '_token_'           => $apiToken,
                     '_token_issuer_'    => 1,
                     '_ott_'             => $ott
+                ]
+            ]);
+        } catch (ConnectException $e) {
+            throw new CanNotConnectToServerException();
+        }
+
+        return $this->getResult($response);
+    }
+
+    /**
+     * @param int $invoiceId
+     * @param string $apiToken
+     * @return array
+     * @throws CanNotConnectToServerException
+     */
+    function closeInvoice(int $invoiceId, string $apiToken): array
+    {
+        try {
+            $response = $this->httpClient->get($this->endpoint(__FUNCTION__), [
+                'query' => [
+                    'id' => $invoiceId
+                ],
+                'headers' => [
+                    '_token_'           => $apiToken,
+                    '_token_issuer_'    => 1,
                 ]
             ]);
         } catch (ConnectException $e) {

@@ -57,4 +57,12 @@ interface iClient
         int    $preferredTaxRate
     ) :array ;
 
+    /**
+     * @param int $invoiceId
+     * @param string $apiToken
+     * @return array
+     */
+    function closeInvoice(int $invoiceId, string $apiToken ) :array ;
+
+
 }
