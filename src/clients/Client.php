@@ -150,7 +150,7 @@ class Client implements iClient
      */
     public function cancelInvoice(string $apiToken, int $invoiceId): bool
     {
-        $result = $this->handler->closeInvoice($invoiceId,$apiToken);
+        $result = $this->handler->cancelInvoice($apiToken, $invoiceId);
 
         if ($result['hasError']){
             throw new PaymentException();
