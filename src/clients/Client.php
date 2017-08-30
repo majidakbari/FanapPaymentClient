@@ -33,7 +33,7 @@ class Client implements iClient
      * @return array
      * @throws UnAuthorizedException
      */
-    function getBusinessId(string $apiToken): array
+    public function getBusinessId(string $apiToken): array
     {
         $result = $this->handler->getBusinessId($apiToken);
         if ($result['hasError']){
@@ -51,7 +51,7 @@ class Client implements iClient
      * @return bool
      * @throws UnAuthorizedException
      */
-    function followDigipeyk(string $token, int $businessId, bool $follow = true): bool
+    public function followDigipeyk(string $token, int $businessId, bool $follow = true): bool
     {
         $result = $this->handler->followDigipeyk($token, $businessId, $follow);
         if ($result['hasError']){
@@ -66,7 +66,7 @@ class Client implements iClient
      * @return string
      * @throws UnAuthorizedException
      */
-    function getOneTimeToken(string $apiToken): string
+    public function getOneTimeToken(string $apiToken): string
     {
         $result = $this->handler->getOneTimeToken($apiToken);
         if ($result['hasError']){
@@ -91,7 +91,7 @@ class Client implements iClient
      * @return array
      * @throws PaymentException
      */
-    function createInvoice(
+    public function createInvoice(
         string $apiToken,
         string $ott,
         string $redirectUrl,
@@ -132,7 +132,7 @@ class Client implements iClient
      * @return array
      * @throws PaymentException
      */
-    function closeInvoice(int $invoiceId, string $apiToken): array
+    public function closeInvoice(int $invoiceId, string $apiToken): array
     {
         $result = $this->handler->closeInvoice($invoiceId,$apiToken);
 
@@ -148,9 +148,26 @@ class Client implements iClient
      * @return bool
      * @throws PaymentException
      */
-    function cancelInvoice(string $apiToken, int $invoiceId): bool
+    public function cancelInvoice(string $apiToken, int $invoiceId): bool
     {
         $result = $this->handler->closeInvoice($invoiceId,$apiToken);
+
+        if ($result['hasError']){
+            throw new PaymentException();
+        }
+
+        return $result['result'];
+    }
+
+    /**
+     * @param string $apiToken
+     * @param int $invoiceId
+     * @return array
+     * @throws PaymentException
+     */
+    public function getInvoice(string $apiToken, int $invoiceId): array
+    {
+        $result = $this->handler->getInvoice( $apiToken, $invoiceId);
 
         if ($result['hasError']){
             throw new PaymentException();

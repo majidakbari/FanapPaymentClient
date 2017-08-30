@@ -73,5 +73,13 @@ interface iClient
      */
     function cancelInvoice(string $apiToken, int $invoiceId) :bool ;
 
+    /**
+     * @param string $apiToken
+     * @param $invoiceId
+     * @return array
+     */
+    function getInvoice(string $apiToken, int $invoiceId) :array ;
+
+
 
 }

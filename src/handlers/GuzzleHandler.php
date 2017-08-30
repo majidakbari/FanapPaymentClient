@@ -74,6 +74,8 @@ class GuzzleHandler implements iHandler
             case 'cancelInvoice':
                 return $this->serverUrl . ':8081/nzh/biz/cancelInvoice/';
                 break;
+            case 'getInvoice':
+                return $this->serverUrl . ':8081/nzh/biz/getInvoiceList/';
         }
 
         return '';
@@ -241,6 +243,33 @@ class GuzzleHandler implements iHandler
             $response = $this->httpClient->get($this->endpoint(__FUNCTION__), [
                 'query' => [
                     'id' => $invoiceId
+                ],
+                'headers' => [
+                    '_token_'           => $apiToken,
+                    '_token_issuer_'    => 1,
+                ]
+            ]);
+        } catch (ConnectException $e) {
+            throw new CanNotConnectToServerException();
+        }
+
+        return $this->getResult($response);
+    }
+
+    /**
+     * @param string $apiToken
+     * @param int $invoiceId
+     * @return array
+     * @throws CanNotConnectToServerException
+     */
+    public function getInvoice(string $apiToken, int $invoiceId): array
+    {
+        try {
+            $response = $this->httpClient->get($this->endpoint(__FUNCTION__), [
+                'query' => [
+                    'id'      => $invoiceId,
+                    'firstId' => 0
+
                 ],
                 'headers' => [
                     '_token_'           => $apiToken,

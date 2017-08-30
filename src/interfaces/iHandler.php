@@ -71,4 +71,12 @@ interface iHandler
      * @return array
      */
     function cancelInvoice(string $apiToken, int $invoiceId) :array ;
+
+    /**
+     * @param string $apiToken
+     * @param $invoiceId
+     * @return array
+     */
+    function getInvoice(string $apiToken, int $invoiceId) :array ;
+
 }
