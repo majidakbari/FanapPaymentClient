@@ -58,24 +58,24 @@ class GuzzleHandler implements iHandler
         switch ($method) {
 
             case 'getBusinessId':
-                return $this->serverUrl . ':8081/nzh/biz/getBusiness';
+                return $this->serverUrl . '/nzh/biz/getBusiness';
                 break;
             case 'followDigipeyk':
-                return $this->serverUrl . ':8081/nzh/follow/';
+                return $this->serverUrl . '/nzh/follow/';
                 break;
             case 'getOneTimeToken':
-                return $this->serverUrl . ':8081/nzh/ott/';
+                return $this->serverUrl . '/nzh/ott/';
                 break;
             case 'createInvoice':
-                return $this->serverUrl . ':8081/nzh/biz/issueInvoice/';
+                return $this->serverUrl . '/nzh/biz/issueInvoice/';
             case 'closeInvoice' :
-                return $this->serverUrl . ':8081/nzh/biz/closeInvoice/';
+                return $this->serverUrl . '/nzh/biz/closeInvoice/';
                 break;
             case 'cancelInvoice':
-                return $this->serverUrl . ':8081/nzh/biz/cancelInvoice/';
+                return $this->serverUrl . '/nzh/biz/cancelInvoice/';
                 break;
             case 'getInvoice':
-                return $this->serverUrl . ':8081/nzh/biz/getInvoiceList/';
+                return $this->serverUrl . '/nzh/biz/getInvoiceList/';
         }
 
         return '';
@@ -91,7 +91,7 @@ class GuzzleHandler implements iHandler
     {
         try {
             $response = $this->httpClient->get($this->endpoint(__FUNCTION__), [
-                'query' => [
+                'headers' => [
                     '_token_' => $apiToken,
                     '_token_issuer_' => 1
                 ]
@@ -115,10 +115,12 @@ class GuzzleHandler implements iHandler
         try {
             $response = $this->httpClient->get($this->endpoint(__FUNCTION__), [
                 'query' => [
-                    '_token_'        => $token,
-                    '_token_issuer_' => 1,
                     'follow'         => $follow,
                     'businessId'     => $businessId
+                ],
+                'headers' => [
+                    '_token_'        => $token,
+                    '_token_issuer_' => 1,
                 ]
             ]);
         } catch (ConnectException $e) {
@@ -137,7 +139,7 @@ class GuzzleHandler implements iHandler
     {
         try {
             $response = $this->httpClient->get($this->endpoint(__FUNCTION__), [
-                'query' => [
+                'headers' => [
                     '_token_'        => $apiToken,
                     '_token_issuer_' => 1
                 ]

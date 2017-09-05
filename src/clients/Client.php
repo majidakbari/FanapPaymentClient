@@ -1,6 +1,7 @@
 <?php
 namespace makbari\fanapPaymentClient\clients;
 
+use function GuzzleHttp\Psr7\_caseless_remove;
 use makbari\fanapPaymentClient\exceptions\PaymentException;
 use makbari\fanapPaymentClient\exceptions\UnAuthorizedException;
 use makbari\fanapPaymentClient\interfaces\iClient;
