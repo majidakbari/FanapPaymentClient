@@ -112,10 +112,11 @@ class GuzzleHandler implements iHandler
      */
     public function followDigipeyk(string $token, int $businessId, bool $follow = true): array
     {
+
         try {
             $response = $this->httpClient->get($this->endpoint(__FUNCTION__), [
                 'query' => [
-                    'follow'         => $follow,
+                    'follow'         => 'true',
                     'businessId'     => $businessId
                 ],
                 'headers' => [

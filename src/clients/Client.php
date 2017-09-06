@@ -55,6 +55,7 @@ class Client implements iClient
     public function followDigipeyk(string $token, int $businessId, bool $follow = true): bool
     {
         $result = $this->handler->followDigipeyk($token, $businessId, $follow);
+
         if ($result['hasError']){
             throw new UnAuthorizedException();
         }
